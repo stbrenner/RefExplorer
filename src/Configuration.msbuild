@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Zip" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\3p\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <AssemblyName>RefExplorer</AssemblyName>
+  </PropertyGroup>
+
+  <Target Name="Build32">
+    <MSBuild Projects="RefExplorer.sln" Properties="Platform=x86"/>
+  </Target>
+  
+  <Target Name="Build64">
+    <MSBuild Projects="RefExplorer.sln" Properties="Platform=x64"/>
+  </Target>
+
+  <Target Name="GetProductVersion" DependsOnTargets="Build32; Build64">
+    <CreateItem Include="Gui\bin\x86\$(Configuration)\$(AssemblyName).exe">
+      <Output ItemName="MyAssemblies" TaskParameter="Include"/>
+    </CreateItem>
+    <GetAssemblyIdentity AssemblyFiles="@(MyAssemblies)">
+      <Output TaskParameter="Assemblies" ItemName="MyIdentities"/>
+    </GetAssemblyIdentity>
+    <CreateProperty Value="%(MyIdentities.Version)">
+      <Output TaskParameter="Value" PropertyName="ProductVersion" />
+    </CreateProperty>
+    <Message Text="ProductVersion: $(ProductVersion)" />
+  </Target>
+
+  <PropertyGroup>
+    <OutputDir>output\</OutputDir>
+    <TempDir>$(OutputDir)temp\</TempDir>
+  </PropertyGroup>
+  
+  <Target Name="Merge" DependsOnTargets="Build32; Build64">
+    <MakeDir Directories="$(OutputDir)" />
+    <MakeDir Directories="$(TempDir)" />
+    <Exec Command="..\3p\ilmerge\ilmerge.exe /out:$(TempDir)$(AssemblyName).exe /keyfile:RefExplorer.snk Gui\bin\x86\$(Configuration)\$(AssemblyName).exe Gui\bin\x86\$(Configuration)\RefExplorer.Core.dll"/>
+    <Exec Command="..\3p\ilmerge\ilmerge.exe /out:$(TempDir)$(AssemblyName)64.exe /keyfile:RefExplorer.snk Gui\bin\x64\$(Configuration)\$(AssemblyName).exe Gui\bin\x64\$(Configuration)\RefExplorer.Core.dll"/>
+  </Target>
+
+  <Target Name="Zip" DependsOnTargets="Merge; GetProductVersion">
+    <CreateProperty Condition=" '$(Configuration)' != 'Release' " Value="_$(Configuration)">
+      <Output TaskParameter="Value" PropertyName="ZipFilenameExtension" />
+    </CreateProperty>
+    <CreateProperty Value="$(OutputDir)$(AssemblyName)_$(ProductVersion)$(ZipFilenameExtension).zip">
+      <Output TaskParameter="Value" PropertyName="ZipFilename" />
+    </CreateProperty>
+
+    <Copy SourceFiles="Gui\bin\x86\$(Configuration)\$(AssemblyName).exe.config" DestinationFolder="$(TempDir)"/>
+    <Copy SourceFiles="Gui\bin\x64\$(Configuration)\$(AssemblyName).exe.config" DestinationFiles="$(TempDir)\$(AssemblyName)64.exe.config"/>
+    
+    <CreateItem Include="$(TempDir)$(AssemblyName).exe;$(TempDir)$(AssemblyName).exe.config;$(TempDir)$(AssemblyName)64.exe;$(TempDir)$(AssemblyName)64.exe.config">
+      <Output ItemName="ZipFiles" TaskParameter="Include"/>
+    </CreateItem>
+    <Zip Files="@(ZipFiles)" ZipFileName="$(ZipFilename)" WorkingDirectory="$(TempDir)" />
+  </Target>
+</Project>

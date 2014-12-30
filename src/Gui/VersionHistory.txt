@@ -1,0 +1,35 @@
+.NET Reference Explorer
+-----------------------
+
+Version 1.5.1 (July 2012)
+- Fixed: Image not displayed when user name contained unicode characters
+
+Version 1.5.0 (April 2012)
+- Fixed: Error handling
+- Fixed: Loading from GAC when .NET 4 is not installed
+- Implemented: Displaying .NET Framework version in report
+
+Version 1.4.2 (October 2010)
+- Fixed: Saving of configuration file
+- New: Support for the new .NET assembly cache (introduced with .NET 4)
+
+Version 1.4.1 (September 2010)
+- New: Support for .NET 4 Assemblies
+
+Version 1.4 (December 2009)
+- New: Exploration of references to native DLLs (P/Invoke)
+- New: Saving of settings when application is closed
+- Fixed: Better message if zoom is not supported
+
+Version 1.3 (September 2009)
+- New: Entry points tab
+- New: Assemblies can be added from global assembly cache
+- New: Zoom
+- Fixed: Better error handling
+
+Version 1.2 (May 2008)
+- New: Using global assemblies as entry assemblies
+- New: Multi-selection in 'Open File' dialog
+- New: Config files of entry assemblies now get processed
+- New: No installation needed anymore. Everything is in one directly executable EXE.
+- Fixed: Loading of global assemblies with publisher policies

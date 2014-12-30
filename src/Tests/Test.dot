@@ -1,0 +1,9 @@
+digraph G {
+graph [fontname="Arial", label="\nTitle, 09/21/2006"];
+node [shape=box,fontname="Arial"];
+edge [color=midnightblue];
+"Brenner.Assembly.One\n1.2.3.4" -> "Brenner.Assembly.Two\n1.2.3.4";
+"Brenner.Assembly.One\n1.2.3.4" -> "System\n1.2.3.4";
+"Brenner.Assembly.One\n1.2.3.4" -> "System.Xml\n1.2.3.4";
+"Brenner.Assembly.Two\n1.2.3.4" -> "System\n1.2.3.4";
+}

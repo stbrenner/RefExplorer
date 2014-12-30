@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8649AF81-DF72-4F0D-AFB8-2800106E9A8B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RefExplorer.Core</RootNamespace>
+    <AssemblyName>RefExplorer.Core</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\RefExplorer.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\BuildInfo.cs">
+      <Link>Properties\BuildInfo.cs</Link>
+    </Compile>
+    <Compile Include="Assemblies\AssemblyFileInfo.cs" />
+    <Compile Include="Assemblies\GacInfo.cs" />
+    <Compile Include="Assemblies\PublicKeyToken.cs" />
+    <Compile Include="Assemblies\TargetPlatform.cs" />
+    <Compile Include="Collections\CollectionUtil.cs" />
+    <Compile Include="Collections\SerializableDictionary.cs" />
+    <Compile Include="CommandLine\CommandAttribute.cs" />
+    <Compile Include="CommandLine\CommandBase.cs" />
+    <Compile Include="CommandLine\CommandHelp.cs" />
+    <Compile Include="CommandLine\CommandLine.cs" />
+    <Compile Include="CommandLine\CommandRegistry.cs" />
+    <Compile Include="CommandLine\ICommand.cs" />
+    <Compile Include="Configuration\AssemblyDirectoryPath.cs" />
+    <Compile Include="Configuration\AssemblyDirectPath.cs" />
+    <Compile Include="Configuration\AssemblyPath.cs" />
+    <Compile Include="Configuration\AssemblySearchPath.cs" />
+    <Compile Include="Configuration\ConfigurationFile.cs" />
+    <Compile Include="Configuration\ExplorerConfiguration.cs" />
+    <Compile Include="Implementation\AssemblyInfoReader.cs" />
+    <Compile Include="Implementation\AssemblyPathResolver.cs" />
+    <Compile Include="Implementation\MiniReader.cs" />
+    <Compile Include="Implementation\XhtmlGenerator.cs" />
+    <Compile Include="Installers\InstantInstallerBase.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ExplorerEngine.cs" />
+    <Compile Include="Result\AssemblyInfo.cs" />
+    <Compile Include="Result\AssemblyResult.cs" />
+    <Compile Include="Result\ReferenceType.cs" />
+    <Compile Include="Result\ReferenceInfo.cs" />
+    <Compile Include="Result\DiGraph.cs" />
+    <Compile Include="Result\DotTool.cs" />
+    <Compile Include="Result\ReferenceResult.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\RefExplorer.snk">
+      <Link>RefExplorer.snk</Link>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
