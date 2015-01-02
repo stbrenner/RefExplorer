@@ -21,9 +21,11 @@
     <GetAssemblyIdentity AssemblyFiles="@(MyAssemblies)">
       <Output TaskParameter="Assemblies" ItemName="MyIdentities"/>
     </GetAssemblyIdentity>
-    <CreateProperty Value="%(MyIdentities.Version)">
-      <Output TaskParameter="Value" PropertyName="ProductVersion" />
-    </CreateProperty>
+	<PropertyGroup>
+        <Pattern>(\d+)\.(\d+)</Pattern>
+        <In>%(MyIdentities.Version)</In>
+        <ProductVersion>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern)))</ProductVersion>
+    </PropertyGroup>
     <Message Text="ProductVersion: $(ProductVersion)" />
   </Target>
 

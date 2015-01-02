@@ -14,7 +14,6 @@ namespace RefExplorer.Core.Installers
 
         public DirectoryInfo Directory { get { return directory; } }
 
-
         public void Execute()
         {
             try

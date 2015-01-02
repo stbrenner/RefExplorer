@@ -7,29 +7,42 @@
 
 using System.IO;
 using RefExplorer.Core.Configuration;
-using NUnit.Framework;
+using Xunit;
 using RefExplorer.Core;
 using RefExplorer.Core.Result;
+using RefExplorer.Gui;
+using RefExplorer.Core.Implementation;
 
 namespace RefExplorer.Tests
 {
-  [TestFixture]
-  public class DiGraphFixture
-  {
-    [Test]
-    public void TestWrite()
+
+    public class DiGraphFixture
     {
-      ReferenceResult result = new ReferenceResult();
-      // O-###-SNB/SNB: TODO
-      //result.AssemblyInfos.Add(new ReferenceInfo(@"c:\bla.dll", null));
+        [Fact]
+        public void TestWrite()
+        {
+            using (var instantInstaller = new InstantInstaller())
+            {
+                instantInstaller.Execute();
 
-      using (MemoryStream stream = new MemoryStream())
-      {
-        DiGraph diGraph = new DiGraph(result, new ExplorerConfiguration());
-        diGraph.Write(stream);
+                var config = new ExplorerConfiguration
+                {
+                    BaseDirectory = instantInstaller.Directory
+                };
+                config.AssemblyPaths.Add(new AssemblyDirectPath(GetType().Assembly.Location));
 
-        Assert.AreEqual(306, stream.Length);
-      }
+                var infoReader = new AssemblyInfoReader(config);
+                var result = new ReferenceResult();
+                infoReader.Execute(result.References);
+
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    DiGraph diGraph = new DiGraph(result, new ExplorerConfiguration());
+                    diGraph.Write(stream);
+
+                    Assert.Equal(645, stream.Length);
+                }
+            }
+        }
     }
-  }
 }

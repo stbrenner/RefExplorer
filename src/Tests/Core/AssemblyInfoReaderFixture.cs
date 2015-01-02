@@ -7,26 +7,26 @@
 
 using System.Collections.Generic;
 using RefExplorer.Core.Configuration;
-using NUnit.Framework;
+using Xunit;
 using RefExplorer.Core.Implementation;
 using RefExplorer.Core.Result;
 
 namespace RefExplorer.Tests
 {
-  [TestFixture]
-  public class AssemblyInfoReaderFixture
-  {
-    [Test]
-    public void TestReading()
+    
+    public class AssemblyInfoReaderFixture
     {
-      List<string> paths = new List<string>();
-      paths.Add(GetType().Assembly.Location);
-      var infoReader = new AssemblyInfoReader(new ExplorerConfiguration());
-      var result = new List<ReferenceInfo>();
-      // O-###-SNB/SNB: TODO
-      //infoReader.Execute(result);
-      Assert.AreEqual(1, result.Count);
-      Assert.IsNull(result[0].Exception);
+        [Fact]
+        public void TestReading()
+        {
+            var config = new ExplorerConfiguration();
+            config.AssemblyPaths.Add(new AssemblyDirectPath(GetType().Assembly.Location));
+
+            var infoReader = new AssemblyInfoReader(config);
+            var result = new Dictionary<string, AssemblyResult>();
+
+            infoReader.Execute(result);
+            Assert.Equal(1, result.Count);
+        }
     }
-  }
 }

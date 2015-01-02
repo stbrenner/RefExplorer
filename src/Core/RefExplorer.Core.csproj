@@ -51,12 +51,6 @@
     <Compile Include="Assemblies\TargetPlatform.cs" />
     <Compile Include="Collections\CollectionUtil.cs" />
     <Compile Include="Collections\SerializableDictionary.cs" />
-    <Compile Include="CommandLine\CommandAttribute.cs" />
-    <Compile Include="CommandLine\CommandBase.cs" />
-    <Compile Include="CommandLine\CommandHelp.cs" />
-    <Compile Include="CommandLine\CommandLine.cs" />
-    <Compile Include="CommandLine\CommandRegistry.cs" />
-    <Compile Include="CommandLine\ICommand.cs" />
     <Compile Include="Configuration\AssemblyDirectoryPath.cs" />
     <Compile Include="Configuration\AssemblyDirectPath.cs" />
     <Compile Include="Configuration\AssemblyPath.cs" />

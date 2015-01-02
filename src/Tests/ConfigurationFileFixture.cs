@@ -8,40 +8,48 @@
 using System.Collections.Generic;
 using System.IO;
 using RefExplorer.Core.Result;
-using NUnit.Framework;
+using Xunit;
 using RefExplorer.Core;
 using RefExplorer.Core.Configuration;
+using RefExplorer.Gui;
 
 namespace RefExplorer.Tests
 {
-	[TestFixture]
 	public class ConfigurationFileFixture
 	{
-		[Test]
+		[Fact]
 		public void TestBeam()
 		{
-			ExplorerConfiguration createdConfig = new ExplorerConfiguration();
-			createdConfig.AssemblyPaths.Add(new AssemblyDirectPath(@"C:\A.dll"));
-			createdConfig.AssemblyPaths.Add(new AssemblyDirectoryPath(@"C:\Temp"));
-      createdConfig.AssemblyPaths.Add(new AssemblySearchPath(@"C:\Bla", "Stephan.*.dll", SearchOption.TopDirectoryOnly));
-      //createdConfig.OutputFile = @"C:\C.dll";
+            using (var instantInstaller = new InstantInstaller())
+            {
+                instantInstaller.Execute();
 
-			string tempFileName = Path.GetTempFileName();
-			ConfigurationFile.Save(tempFileName, createdConfig);
-			ExplorerConfiguration openedConfig = ConfigurationFile.Open(tempFileName);
+                ExplorerConfiguration createdConfig = new ExplorerConfiguration
+                {
+                    BaseDirectory = instantInstaller.Directory
+                };
+                createdConfig.AssemblyPaths.Add(new AssemblyDirectPath(@"C:\A.dll"));
+                createdConfig.AssemblyPaths.Add(new AssemblyDirectoryPath(@"C:\Temp"));
+                createdConfig.AssemblyPaths.Add(new AssemblySearchPath(@"C:\Bla", "Stephan.*.dll", SearchOption.TopDirectoryOnly));
+                //createdConfig.OutputFile = @"C:\C.dll";
 
-      Assert.IsTrue(openedConfig.AssemblyPaths[0] is AssemblyDirectPath);
-      Assert.AreEqual(@"C:\A.dll", ((AssemblyDirectPath)openedConfig.AssemblyPaths[0]).Path);
-      Assert.IsTrue(openedConfig.AssemblyPaths[1] is AssemblyDirectoryPath);
-      Assert.AreEqual(@"C:\Temp", ((AssemblyDirectoryPath)openedConfig.AssemblyPaths[1]).Path);
-      Assert.IsTrue(openedConfig.AssemblyPaths[2] is AssemblySearchPath);
-      Assert.AreEqual(@"C:\Bla", ((AssemblySearchPath)openedConfig.AssemblyPaths[2]).Path);
-      Assert.AreEqual("Stephan.*.dll", ((AssemblySearchPath)openedConfig.AssemblyPaths[2]).SearchPattern);
-      Assert.AreEqual(SearchOption.TopDirectoryOnly, ((AssemblySearchPath)openedConfig.AssemblyPaths[2]).SearchOption);
-      //Assert.AreEqual(@"C:\C.dll", openedConfig.OutputFile);
+                string tempFileName = Path.GetTempFileName();
+                ConfigurationFile.Save(tempFileName, createdConfig);
+                ExplorerConfiguration openedConfig = ConfigurationFile.Open(tempFileName);
+
+                Assert.True(openedConfig.AssemblyPaths[0] is AssemblyDirectPath);
+                Assert.Equal(@"C:\A.dll", ((AssemblyDirectPath)openedConfig.AssemblyPaths[0]).Path);
+                Assert.True(openedConfig.AssemblyPaths[1] is AssemblyDirectoryPath);
+                Assert.Equal(@"C:\Temp", ((AssemblyDirectoryPath)openedConfig.AssemblyPaths[1]).Path);
+                Assert.True(openedConfig.AssemblyPaths[2] is AssemblySearchPath);
+                Assert.Equal(@"C:\Bla", ((AssemblySearchPath)openedConfig.AssemblyPaths[2]).Path);
+                Assert.Equal("Stephan.*.dll", ((AssemblySearchPath)openedConfig.AssemblyPaths[2]).SearchPattern);
+                Assert.Equal(SearchOption.TopDirectoryOnly, ((AssemblySearchPath)openedConfig.AssemblyPaths[2]).SearchOption);
+                //Assert.Equal(@"C:\C.dll", openedConfig.OutputFile);
+            }
 		}
 	  
-	  [Test]
+	  [Fact]
 	  public void TestDirectoryResolve()
 	  {
       string directory = Path.Combine(Path.GetTempPath(), "TestDirectoryResolve");
@@ -54,12 +62,12 @@ namespace RefExplorer.Tests
 	    AssemblyDirectoryPath assemblyDirectory = new AssemblyDirectoryPath(directory);
       IList<string> result = assemblyDirectory.Resolve();
 
-      Assert.AreEqual(2, result.Count);
-      Assert.AreEqual(dllFile, result[0]);
-      Assert.AreEqual(exeFile, result[1]);
+      Assert.Equal(2, result.Count);
+      Assert.Equal(dllFile, result[0]);
+      Assert.Equal(exeFile, result[1]);
     }
 	  
-	  [Test]
+	  [Fact]
 	  public void TestSearchResolve()
 	  {
       string directory = Path.Combine(Path.GetTempPath(), "TestSearchResolve");
@@ -72,8 +80,8 @@ namespace RefExplorer.Tests
       AssemblySearchPath assemblyDirectory = new AssemblySearchPath(directory, "*.exe", SearchOption.TopDirectoryOnly);
       IList<string> result = assemblyDirectory.Resolve();
 
-      Assert.AreEqual(1, result.Count);
-      Assert.AreEqual(exeFile, result[0]);
+      Assert.Equal(1, result.Count);
+      Assert.Equal(exeFile, result[0]);
     }
 	}
 }
